@@ -1,1 +1,38 @@
 **/output.json
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Python compiled files
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+
+# Editor/IDE specific files
+.vscode/ # VS Code specific files
+.idea/   # IntelliJ IDEA/PyCharm specific files
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Configuration files (if they contain sensitive data)
+.env
+config.py # Or any other file containing secrets
+
+# Database files (if local, not meant for version control)
+*.sqlite
+*.db
+
+# Test related files
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
