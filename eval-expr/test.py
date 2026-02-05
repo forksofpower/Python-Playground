@@ -1,6 +1,7 @@
 import unittest
 
-from eval import eval_expr
+from eval_expr import eval_expr
+
 class EvalMathTests(unittest.TestCase):
 
     def test_addition(self):

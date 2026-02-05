@@ -3,9 +3,6 @@ from constants import Operator
 
 TERMINATOR = "\0"
 
-# optional: pre-compile regex
-number_pattern = re.compile(r'\d+')
-
 def eval_expr(expression: str):
     stack = []
     current_number = 0
@@ -20,14 +17,9 @@ def eval_expr(expression: str):
 
         # handle digits
         if char.isdigit():
-            # optional: use pre-compiled regex
-            match = number_pattern.search(expression[index:])
-            # match = re.search(r'\d+',expression[index:])
-            #
-            current_number = int(match.group())
-            index = index + len(match.group()) - 1
+            current_number = (current_number * 10) + int(char)
         
-        # handle 
+        # handle parenthetical sub-expressions
         elif char == '(':
             sl = 0
             depth = 0
@@ -43,7 +35,7 @@ def eval_expr(expression: str):
             end_index = index + sl
             # evaluate sub-expression
             se = expression[index+1 : end_index]
-            current_number = eval(se)
+            current_number = eval_expr(se)
             # compensate index for dig depth
             index = end_index
 
@@ -70,6 +62,3 @@ def eval_expr(expression: str):
         index += 1
 
     return float(sum(stack))
-
-if __name__ == "__main__":
-    print(eval("5 * (2 - 8)"))
