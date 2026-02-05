@@ -62,6 +62,3 @@ def eval_expr(expression: str):
         index += 1
 
     return float(sum(stack))
-
-if __name__ == "__main__":
-    print(eval("5 * (2 - 8)"))

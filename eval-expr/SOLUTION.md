@@ -1,15 +1,15 @@
 # Solutions
 > [!NOTE]
-> This article contains my solutions described in the the [main article](README.md).
+> This article contains my solutions described in the the [main article](ARTICLE.md).
 
 ### Unit Tests
 
-The first step I took when trying to tackle this in Python was to write some tests to give myself a baseline for requirements. This would make debugging side effects or regressions much easier in the future. 
+The first step I took when trying to tackle this in Python was to write some tests. This would make debugging side effects or regressions much easier in the future. 
 
 ```python
 import unittest
 
-from eval import eval as eval_expr
+from eval import eval_expr
 
 class EvalMathTests(unittest.TestCase):
 
