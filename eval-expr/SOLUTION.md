@@ -1,45 +1,6 @@
-# Solutions
+# Solution
 > [!NOTE]
 > This article contains my solutions described in the the [main article](ARTICLE.md).
-
-### Unit Tests
-
-The first step I took when trying to tackle this in Python was to write some tests. This would make debugging side effects or regressions much easier in the future. 
-
-```python
-import unittest
-
-from eval import eval_expr
-
-class EvalMathTests(unittest.TestCase):
-
-    def test_addition(self):
-        self.assertEqual(eval_expr("2 + 3"), 5.0)
-
-    def test_subtraction(self):
-        self.assertEqual(eval_expr("5 - 2"), 3.0)
-        self.assertEqual(eval_expr("55 - 5"), 50.0)
-
-    def test_multiplication(self):
-        self.assertEqual(eval_expr("3 * 4"), 12.0)
-
-    def test_division(self):
-        self.assertEqual(eval_expr("8 / 2"), 4.0)
-    
-    def test_parentheses(self):
-        self.assertEqual(eval_expr("(2 + 3) * 4"), 20.0)
-
-    def test_nested_parentheses(self):
-        self.assertEqual(eval_expr("(4 * (5 * 5)) + 1"), 101.00)
-        # ...
-
-    def test_complex_expression(self):
-        self.assertEqual(eval_expr("3 + 5 * (2 - 8)"), -27, msg)
-        # ...
-
-if __name__ == '__main__':
-    unittest.main()
-```
 
 ## Refactor: operator handling
 The first issue I wanted to tackle was having to "look ahead" in the expression to find the second operand if the current character is an operator. This was adding a lot of extra pushing and popping to the stack, required skipping the index ahead somehow, and also would not handle the case where an operand was a parenthetical group.
@@ -196,7 +157,5 @@ Ran 7 tests in 0.001s
 
 OK
 ```
-
-
 ## Conclusion
-I'm pleased with my current solution as it passes all tests and fulfills all the requirements from the interview, but there are a few changes I'd like to make in the future. By moving removing the nested for loop in the parentheses handling logic I can move the `depth` variable outside of the while loop and add a variable to track a sub-expression starting position. This is something I can work on later.
+I'm pleased with my current solution as it passes all tests and fulfills all the requirements from the interview, but there are a few changes I'd like to make in the future. By moving removing the nested for loop in the parentheses handling logic I can move the `depth` variable outside of the while loop and add a variable to track a sub-expression starting position. When `depth` returns to 0 after landing on a `)` character, the substring could be evaluated, removing the need for a `for` loop nested in a `while` loop.
