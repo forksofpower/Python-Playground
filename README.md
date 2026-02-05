@@ -4,8 +4,11 @@ This repository serves as a playground for exploring various Python topics, patt
 
 ## Projects
 
-### Dependency Injection (`di`)
+### Math Expression Evaluator (`eval-expr`)
+An article stemming from a programming interview problem.
+[Read the article](./eval-expr/ARTICLE.md)
 
+### Dependency Injection (`di`)
 A comprehensive guide to dependency injection in Python. It demonstrates the evolution from hardcoded dependencies to manual injection and finally using a DI container. It also includes a FastAPI integration example.
 
 [Read more](./di/README.md)
