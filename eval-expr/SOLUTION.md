@@ -105,7 +105,7 @@ Now the only remaining inefficiency that I could identify was the nested loops w
 
 To ensure the loop doesn't re-process the next characters we can also return the last index processed in the recursive scope so that the index can be fast-forwarded. Since I don't want my main function to return an index, I can create a recursive handler that manages the `while` loop and stack creation. I wanted to stay away from having to track a sub-expression's index offset as well (adding it to the "current" index at the end), however this would mean passing the *entire expression* to every recursive function call. This would balloon the memory complexity to $`O(n*k)`$ where $`k`$ is the number of groups of parentheses. 
 
-Ideally, I want to keep the memory usage as close to $`O(n)`$ as possible, so it would make the most sense to skip passing the expression recursively altogether.
+Ideally, I want to keep the memory complexity as close to $`O(n)`$ as possible, so it would make the most sense to skip passing the expression recursively altogether.
 ```python
 def eval_expr(expression: str) -> float:
     expression = expression.lower().replace(" ", "").replace("x", "*") + TERMINATOR
@@ -143,7 +143,7 @@ def eval_expr(expression: str) -> float:
     result, _ = eval_expr_handler(0) # start parsing at the first character
     return result
 ```
-By scanning the expression in-place and only passing the starting index to the recursive handler, no extra significant portions of memory will be used by the expression string. The memory complexity is still not quite $`O(N^2)`$ because of the stacks used in each recursive call, but this can safely be ignored.
+By scanning the expression in-place and only passing the starting index to the recursive handler, no extra significant portions of memory will be used by the expression string. The memory complexity is still not quite $`O(n)`$ because of the stacks used in each recursive call, but this can safely be ignored.
 ## Final Thoughts
 Since this is a recursive solution, I was worried that I'd run into stack overflow issues from deeply nested parenthesis groups. I added a check in my tests to see what it could handle.
 ```python
