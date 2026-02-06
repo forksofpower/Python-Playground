@@ -1,14 +1,15 @@
+from typing import List, Tuple
 from constants import Operator, Parenthesis, TERMINATOR
 
 def eval_expr(expression: str) -> float:
     # format expression, end with dummy terminator to denote end of string
     expression = expression.lower().replace(" ", "").replace("x", "*") + TERMINATOR
 
-    def sum_stack(s: [int]):
+    def sum_stack(s: List[int]):
         return float(sum(s))
         
     # recursive handler
-    def _eval_expr_handler(index: int) -> (float, int):
+    def _eval_expr_handler(index: int) -> Tuple[float, int]:
         stack = []
         current_number = 0
         previous_operator = Operator.ADD
