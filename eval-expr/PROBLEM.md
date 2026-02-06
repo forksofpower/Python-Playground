@@ -1,4 +1,7 @@
 # Interview Coding Problem: Math Expression Evaluator
+> [!NOTE]
+> This article describes the interview problem, if you want to skip ahead, view the [solution](SOLUTION.md).
+
 I was recently given the following problem in an interview and asked to solve in pseudocode while walking the interviewers through my thought process.
 
 ## Problem
