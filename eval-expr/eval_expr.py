@@ -5,7 +5,7 @@ def eval_expr(expression: str) -> float:
     # format expression, end with dummy terminator to denote end of string
     expression = expression.lower().replace(" ", "").replace("x", "*") + TERMINATOR
 
-    def sum_stack(s: List[int]):
+    def sum_stack(s: List[float]) -> float:
         return float(sum(s))
         
     # recursive handler
