@@ -29,6 +29,16 @@ class EvalMathTests(unittest.TestCase):
         self.assertEqual(eval_expr("(4 * (5 * (3 + 2))) + 1"), 101.00, nested_msg(3))
         self.assertEqual(eval_expr("(4 * (5 * (3 + 10))) + 1"), 261.00, nested_msg(3))
         self.assertEqual(eval_expr("(((((5 * 5)))))"), 25.00, nested_msg(5))
+        
+        # it can handle parenthesis groups down to depth = 982
+        for i in range(1, 982):
+            _open = i * '('
+            _close = i * ')'
+            try:
+                eval_expr(f"{_open}5*5{_close}"), 25.0, nested_msg(i)
+            except:  # noqa: E722
+                self.assertFalse(True, nested_msg(i))
+            
 
     def test_complex_expression(self):
         msg = "Complex expression handling is broken"
