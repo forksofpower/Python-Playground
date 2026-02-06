@@ -46,7 +46,7 @@ while index <= len(expression):
         current_number = int(match.group())
         index = index + len(match.group()) - 1
 ```
-This resulted in the last character not being processed, so I added a termination character `\0` that acts as a null and denotes the end of the string. This is a character symbol that is not a digit or `(` and can't be mistaken for an operator, causing the operator handling logic to process the `prev_operator` variable.
+This resulted in the last character not being processed, so I added a termination character `\0` that acts as a null and denotes the end of the string. This is a character symbol that is not a digit or $`(`$ and can't be mistaken for an operator, causing the operator handling logic to process the `prev_operator` variable.
 ```python
 expression = expression.replace(" ", "") + "\0"
 index = 0
@@ -69,7 +69,7 @@ def eval_expr(expression: str):
 ```
 In this case the performance advantages only be noticeable when the input expression is extremely long because the per-iteration overhead is reduced. The regex `r\d+` is *very* simple, so the compilation logic of the parser is minimal.
 ## Refactor: parentheses handling
-The next issue was how I was handling parentheses. Currently, the implementation would break when give `(2 * 2) + (3 * 3)` as it doesn't care about the order of opening and closing parentheses. To fix this I added a `depth` variable to keep track of how many layers of parentheses deep the current iteration is at. When an opening parenthesis is found, `depth` is incremented, when a closing parenthesis is found, `depth` is decremented. If `depth` reaches zero again then the sub expression can be extracted from the expression using the index plus the offset index from the length of the sub-expression.
+The next issue was how I was handling parentheses. Currently, the implementation would break when given $`(2 * 2) + (3 * 3)`$ as it doesn't care about the order of opening and closing parentheses. To fix this I added a `depth` variable to keep track of how many layers of parentheses deep the current iteration is at. When an opening parenthesis is found, `depth` is incremented, when a closing parenthesis is found, `depth` is decremented. If `depth` reaches zero again then the sub expression can be extracted from the expression using the index plus the offset index from the length of the sub-expression.
 ```python
 elif char == '(':
     sub_expression_length = 0
@@ -90,7 +90,7 @@ elif char == '(':
     # compensate index for dig depth so we don't re-scan the expression
     index = end_index
 ```
-Unfortunately, this moved the worst-case time complexity into `O(n^2^)` territory because expressions such as `((((2 * 2))))` will scan through every character between each set of parentheses. Not ideal but I assumed I could optimize this later on.
+Unfortunately, this moved the worst-case time complexity into $`O(n^2)`$ territory because expressions such as $`((((2 * 2))))`$ will scan through every character between each set of parentheses. Not ideal but I assumed I could optimize this later on.
 ## Refactor digit handling
 At this point I had figured out how to store state while scanning sub-expressions without looking ahead, and I wanted to do something similar with multi-digit number handling. The `current_number` variable was already there to store the result of the regex, so I needed to find a way to use the variable to store the temporary digits.
 
@@ -101,11 +101,11 @@ I had stumbled upon a wonderful secret in base10 notation: every digit multiplie
 current_number = (current_number * 10) + int(char)
 ```
 ## Refactor: parentheses handling (again)
-Now the only remaining inefficiency that I could identify was the nested loops when handling parentheses. Fixing this would require flipping the recursive pattern upside down. If I were to recurse immediately every time a `(` is encountered, then I can assume that encountering a `)` (having processed the characters before that point) means that the parenthetical group is finished, and it is time to sum the stack and return the value.
+Now the only remaining inefficiency that I could identify was the nested loops when handling parentheses. Fixing this would require flipping the recursive pattern upside down. If I were to recurse immediately every time a $`(`$ is encountered, then I can assume that encountering a $`)`$ (having processed the characters before that point) means that the parenthetical group is finished, and it is time to sum the stack and return the value.
 
-To ensure the loop doesn't re-process the next characters we can also return the last index processed in the recursive scope so that the index can be fast-forwarded. Since I don't want my main function to return an index, I can create a recursive handler that manages the `while` loop and stack creation. I wanted to stay away from having to track a sub-expression's index offset as well (adding it to the "current" index at the end), however this would mean passing the *entire expression* to every recursive function call. This would balloon the memory complexity to `O(n*k)` where `k` is the number of groups of parentheses. 
+To ensure the loop doesn't re-process the next characters we can also return the last index processed in the recursive scope so that the index can be fast-forwarded. Since I don't want my main function to return an index, I can create a recursive handler that manages the `while` loop and stack creation. I wanted to stay away from having to track a sub-expression's index offset as well (adding it to the "current" index at the end), however this would mean passing the *entire expression* to every recursive function call. This would balloon the memory complexity to $`O(n*k)`$ where $`k`$ is the number of groups of parentheses. 
 
-Ideally, I want to keep the memory usage as close to `O(n)` as possible, so it would make the most sense to skip passing the expression recursively altogether.
+Ideally, I want to keep the memory usage as close to $`O(n)`$ as possible, so it would make the most sense to skip passing the expression recursively altogether.
 ```python
 def eval_expr(expression: str) -> float:
     expression = expression.lower().replace(" ", "").replace("x", "*") + TERMINATOR
@@ -143,7 +143,7 @@ def eval_expr(expression: str) -> float:
     result, _ = eval_expr_handler(0) # start parsing at the first character
     return result
 ```
-By scanning the expression in-place and only passing the starting index to the recursive handler, no extra significant portions of memory will be used by the expression string. The memory complexity is still not quite `O(n)` because of the stacks used in each recursive call, but this can safely be ignored.
+By scanning the expression in-place and only passing the starting index to the recursive handler, no extra significant portions of memory will be used by the expression string. The memory complexity is still not quite $`O(N^2)`$ because of the stacks used in each recursive call, but this can safely be ignored.
 ## Final Thoughts
 Since this is a recursive solution, I was worried that I'd run into stack overflow issues from deeply nested parenthesis groups. I added a check in my tests to see what it could handle.
 ```python
@@ -184,7 +184,7 @@ def eval_expr(expression: str) -> float:
     def sum_stack(s: [int]):
         return float(sum(s))
         
-    def eval_expr_handler(index: int) -> (float, int):
+    def _eval_expr_handler(index: int) -> (float, int):
         stack = []
         current_number = 0
         previous_operator = Operator.ADD
@@ -196,7 +196,7 @@ def eval_expr(expression: str) -> float:
                 current_number = (current_number * 10) + int(char)
 
             elif char == Parenthesis.OPEN:
-                new_number, new_index = eval_expr_handler(index + 1)
+                new_number, new_index = _eval_expr_handler(index + 1)
                 current_number = new_number
                 index = new_index
 
@@ -219,8 +219,6 @@ def eval_expr(expression: str) -> float:
 
         return sum_stack(stack), index
 
-    result, _ = eval_expr_handler(0)
+    result, _ = _eval_expr_handler(0)
     return result
 ```
-<!-- ## Conclusion
-I'm pleased with my current solution as it passes all tests and fulfills all the requirements from the interview, but there are a few changes I'd like to make in the future. By moving removing the nested for loop in the parentheses handling logic I can move the `depth` variable outside the while loop and add a variable to track a sub-expression starting position. When `depth` returns to 0 after landing on a `)` character, the substring could be evaluated, removing the need for a `for` loop nested in a `while` loop. -->
