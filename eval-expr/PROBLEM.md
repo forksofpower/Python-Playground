@@ -1,8 +1,8 @@
 # Interview Coding Problem: Math Expression Evaluator
-I was recently given the following problem in an interview and asked to solve in psuedocode while walking the interviewers through my thought process.
+I was recently given the following problem in an interview and asked to solve in pseudocode while walking the interviewers through my thought process.
 
 ## Problem
-> Write a function called `eval` that takes in a string, `expression`, as input representing a math espression and returns the solution as a `float`. 
+> Write a function called `eval` that takes in a string, `expression`, as input representing a math expression and returns the solution as a `float`. 
 
 You can assume that:
 - `expression` will not have any errors
@@ -61,10 +61,10 @@ This told me a few things:
 - operator symbols should *not* be stored in the stack, otherwise the summing logic would not work
 - subtraction should be converted to addition with a negative number
     - ie: `4 - 5` should be treated as `4 + -5`, adding `-5` to the stack to be summed
-- order of operations required that multiplcation/division happen before any addition/subtraction anyway so it would need to be done during the parsing process, adding the result to the stack to be summed at the end.
+- order of operations required that multiplication/division happen before any addition/subtraction anyway, so it would need to be done during the parsing process, adding the result to the stack to be summed at the end.
 
 ## Updated pseudocode
-This gave me enough information to form a plan to deal that actually returned a value and also made the recusiv elements make sense. 
+This gave me enough information to form a plan to deal that actually returned a value and also made the recursive elements make sense. 
 ```python
 def eval(expression: str) -> float:
     # ...
@@ -86,13 +86,13 @@ def eval(expression: str) -> float:
     return float(sum(stack))
 ```
 ## End of Interview
-At this point the interviewer stopped the technical portion, affirming they had gotten a good sense of my problem sovling skills. 
-However he did have a few notes:
-- I was on the right track with using a stack although I tripped myself up assuming that symbols needed to be saved on the stack as well
-- Using regex would add unneccessary complexity. It is possible to do this without doing a search ahead for multi-digit numbers
-- Splitting at the first `(` and truncating the last character before resursive evaluation made too many assumptions and would not work for many cases
+At this point the interviewer stopped the technical portion, affirming they had gotten a good sense of my problem-solving skills. 
+However, he did have a few notes:
+- I was on the right track with using a stack, although I tripped myself up assuming that symbols needed to be saved on the stack as well
+- Using regex would add unnecessary complexity. It is possible to do this without doing a search ahead for multi-digit numbers
+- Splitting at the first `(` and truncating the last character before recursive evaluation made too many assumptions and would not work for many cases
 
 ### Aftermath
-After work I came home and worked on a few solution that handle most cases, without consulting the internet or an AI overlord.
+After work I came home and worked on a few solutions that handle most cases, without consulting the internet or an AI overlord.
 
 ### [Continue on to the solution](SOLUTION.md)
